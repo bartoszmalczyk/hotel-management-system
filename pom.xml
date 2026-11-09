@@ -11,7 +11,7 @@
 
     <modules>
         <module>hotel-utils</module>
-<!--        <module>hotel-main</module>-->
+        <module>hotel-main</module>
     </modules>
 
     <properties>
