@@ -56,23 +56,18 @@ public class Stay {
     public Guest getMainGuest() {
         return mainGuest;
     }
-
     public List<Guest> getAdditionalGuests() {
         return additionalGuests;
     }
-
     public LocalDate getCheckInDate() {
         return checkInDate;
     }
-
     public int getPlannedDays() {
         return plannedDays;
     }
-
     public String getNotes() {
         return notes;
     }
-
     public LocalDate getPlannedCheckOutDate() {
         return checkInDate.plusDays(plannedDays);
     }
