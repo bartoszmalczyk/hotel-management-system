@@ -13,7 +13,17 @@ import pl.agh.hotel.model.Room;
 import java.time.Clock;
 import java.util.Scanner;
 
+/**
+ * Starts the hotel management application, creates its initial room
+ * configuration and registers all supported console commands.
+ */
 public class Main {
+    /**
+     * Creates the production application using standard input and the system
+     * clock, then runs its command loop.
+     *
+     * @param args command-line arguments; currently unused
+     */
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             Clock clock = Clock.systemDefaultZone();
