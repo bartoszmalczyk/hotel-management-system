@@ -21,6 +21,7 @@
         <junit.version>5.11.4</junit.version>
         <jacoco.version>0.8.12</jacoco.version>
         <javadoc.version>3.11.2</javadoc.version>
+        <commons-csv.version>1.14.1</commons-csv.version>
     </properties>
 
     <dependencyManagement>
