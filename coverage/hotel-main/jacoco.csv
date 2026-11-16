@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+hotel-main,pl.agh.hotel.model,Hotel,0,198,0,20,0,45,0,17,0,7
+hotel-main,pl.agh.hotel.model,Stay,0,106,0,18,0,29,0,16,0,7
+hotel-main,pl.agh.hotel.model,Room,0,62,1,11,0,18,1,10,0,5
+hotel-main,pl.agh.hotel.model,Guest,0,35,0,8,0,10,0,7,0,3
+hotel-main,pl.agh.hotel,Main,3,148,0,4,1,31,1,4,1,2
+hotel-main,pl.agh.hotel.console,ConsoleApplication,0,82,0,14,0,23,0,11,0,4
+hotel-main,pl.agh.hotel.persistence,HotelCsvRepository.RoomData,0,21,0,0,0,1,0,1,0,1
+hotel-main,pl.agh.hotel.persistence,HotelCsvRepository,0,690,5,57,0,131,5,35,0,9
+hotel-main,pl.agh.hotel.command,PricesCommand,0,34,0,4,0,11,0,4,0,2
+hotel-main,pl.agh.hotel.command,SaveCommand,0,77,0,10,0,24,0,7,0,2
+hotel-main,pl.agh.hotel.command,ViewCommand,0,140,0,8,0,38,0,6,0,2
+hotel-main,pl.agh.hotel.command,CheckoutCommand,0,65,0,6,0,21,0,5,0,2
+hotel-main,pl.agh.hotel.command,CheckinCommand,0,224,0,18,0,56,0,11,0,2
+hotel-main,pl.agh.hotel.command,ListCommand,0,88,0,8,0,22,0,6,0,2
+hotel-main,pl.agh.hotel.command,ExitCommand,0,20,0,2,0,8,0,3,0,2

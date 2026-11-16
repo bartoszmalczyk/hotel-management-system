@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hotel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.model</a> &gt; <span class="el_source">Hotel.java</span></div><h1>Hotel.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.model;
+
+import pl.agh.hotel.utils.Map;
+import pl.agh.hotel.utils.MyMap;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Manages hotel rooms and their current stays. Rooms and stays are stored by
+ * room number using the project's {@link MyMap} implementation. The class
+ * validates each operation before changing hotel state.
+ */
+<span class="fc" id="L17">public class Hotel {</span>
+<span class="fc" id="L18">    private final Map&lt;Integer, Room&gt; rooms = new MyMap&lt;&gt;();</span>
+<span class="fc" id="L19">    private final Map&lt;Integer, Stay&gt; stays = new MyMap&lt;&gt;();</span>
+
+    /**
+     * Adds a room without replacing any room already registered under the same
+     * number.
+     *
+     * @param room room to add; cannot be null
+     * @throws IllegalArgumentException when the room is null or its number is
+     *         already registered
+     */
+    public void addRoom(Room room) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (room == null) {</span>
+<span class="fc" id="L31">            throw new IllegalArgumentException(</span>
+                    &quot;The room can't be null.&quot;);
+        }
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (rooms.contains(room.getNumber())) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(</span>
+                    &quot;The room has been already added.&quot;);
+        }
+<span class="fc" id="L38">        rooms.put(room.getNumber(), room);</span>
+<span class="fc" id="L39">    }</span>
+
+    public Room getRoom(int number) {
+<span class="fc" id="L42">        Room room = rooms.get(number);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (room == null) {</span>
+<span class="fc" id="L44">            throw new IllegalArgumentException(</span>
+                    &quot;A room with this number doesn't exist.&quot;);
+        }
+<span class="fc" id="L47">        return room;</span>
+    }
+
+    public Stay getStay(int number) {
+<span class="fc" id="L51">        getRoom(number);</span>
+<span class="fc" id="L52">        return stays.get(number);</span>
+    }
+
+    /**
+     * Assigns a stay to a free room when all guests fit within its capacity.
+     * Validation is completed before the hotel state is changed.
+     *
+     * @param number number of the room to occupy
+     * @param stay stay to assign; cannot be null
+     * @throws IllegalArgumentException when the room does not exist, the stay
+     *         is null, or the number of guests exceeds room capacity
+     * @throws IllegalStateException when the room is already occupied
+     */
+    public void checkIn(int number, Stay stay) {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (stay == null) {</span>
+<span class="fc" id="L67">            throw new IllegalArgumentException(</span>
+                    &quot;Stay can't be null.&quot;);
+        }
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (getStay(number) != null) {</span>
+<span class="fc" id="L71">            throw new IllegalStateException(</span>
+                    &quot;Room is occupied.&quot;);
+        }
+<span class="fc" id="L74">        Room room = getRoom(number);</span>
+<span class="fc" id="L75">        int numberOfGuests = stay.getAdditionalGuests().size() + 1;</span>
+<span class="fc" id="L76">        int roomCapacity = room.getCapacity();</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (numberOfGuests &gt; roomCapacity) {</span>
+<span class="fc" id="L78">            throw new IllegalArgumentException(</span>
+                    &quot;Number of people can't exceed the room capacity.&quot;);
+        }
+<span class="fc" id="L81">        stays.put(number, stay);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Calculates the charge for the actual number of days between check-in and
+     * the current date, then releases the room. A same-day stay costs zero.
+     * The room remains occupied if validation or calculation fails.
+     *
+     * @param number number of the room to release
+     * @param clock source of the check-out date; cannot be null
+     * @return total charge for the room in grosze
+     * @throws IllegalArgumentException when the room does not exist, the clock
+     *         is null, or the calculated stay length is negative
+     * @throws IllegalStateException when the room is not occupied
+     * @throws ArithmeticException when the calculated charge exceeds the
+     *         range of {@code long}
+     */
+    public long checkOut(int number, Clock clock) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (clock == null) {</span>
+<span class="fc" id="L100">            throw new IllegalArgumentException(</span>
+                    &quot;Clock can't be null.&quot;);
+        }
+<span class="fc" id="L103">        Stay stay = getStay(number);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (stay == null) {</span>
+<span class="fc" id="L105">            throw new IllegalStateException(&quot;Room is not occupied.&quot;);</span>
+        }
+<span class="fc" id="L107">        LocalDate checkInDate = stay.getCheckInDate();</span>
+<span class="fc" id="L108">        LocalDate checkOutDate = LocalDate.now(clock);</span>
+<span class="fc" id="L109">        long numberOfDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (numberOfDays &lt; 0) {</span>
+<span class="fc" id="L111">            throw new IllegalArgumentException(&quot;Number of days cannot be negative.&quot;);</span>
+        }
+<span class="fc" id="L113">        long price = getRoom(number).getPriceInGrosz();</span>
+<span class="fc" id="L114">        long totalPrice = Math.multiplyExact(price, numberOfDays);</span>
+<span class="fc" id="L115">        stays.remove(number);</span>
+<span class="fc" id="L116">        return totalPrice;</span>
+    }
+
+    /**
+     * Returns all configured rooms in a separate list. Modifying the returned
+     * list does not modify the hotel.
+     *
+     * @return independent list of all rooms
+     */
+    public List&lt;Room&gt; getRooms() {
+<span class="fc" id="L126">        List&lt;Room&gt; allRooms = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int roomNumber : rooms.keys()) {</span>
+<span class="fc" id="L128">            allRooms.add(rooms.get(roomNumber));</span>
+<span class="fc" id="L129">        }</span>
+<span class="fc" id="L130">        return allRooms;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

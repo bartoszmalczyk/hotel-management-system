@@ -1,0 +1,3 @@
+recordType,roomNumber,description,priceInGrosz,capacity,firstName,lastName,checkInDate,plannedDays,notes
+ROOM,101,Single room,15000,1,,,,,
+ROOM,101,Duplicate room number,25000,2,,,,,

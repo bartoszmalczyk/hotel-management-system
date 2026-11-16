@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-utils</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.utils</a> &gt; <span class="el_source">MyMap.java</span></div><h1>MyMap.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Implements {@link Map} using two parallel lists.
+ * A key and its value are stored at the same index in their respective lists.
+ *
+ * @param &lt;K&gt; type of keys
+ * @param &lt;V&gt; type of values
+ */
+<span class="fc" id="L13">public class MyMap&lt;K, V&gt; implements Map&lt;K, V&gt; {</span>
+<span class="fc" id="L14">    private final List&lt;K&gt; keys = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L15">    private final List&lt;V&gt; values = new ArrayList&lt;&gt;();</span>
+
+    @Override
+    public boolean put(K key, V value) {
+<span class="fc bfc" id="L19" title="All 4 branches covered.">        if (key == null || value == null) {</span>
+<span class="fc" id="L20">            throw new IllegalArgumentException(&quot;Key and value cannot be null.&quot;);</span>
+        }
+<span class="fc" id="L22">        int index = keys.indexOf(key);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (index &lt; 0) {</span>
+<span class="fc" id="L24">            keys.add(key);</span>
+<span class="fc" id="L25">            values.add(value);</span>
+        } else {
+<span class="fc" id="L27">            values.set(index, value);</span>
+        }
+<span class="fc" id="L29">        return true;</span>
+    }
+
+    @Override
+    public V get(K key) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (key == null) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;Key cannot be null.&quot;);</span>
+        }
+<span class="fc" id="L37">        int index = keys.indexOf(key);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        return index &lt; 0 ? null : values.get(index);</span>
+    }
+
+    @Override
+    public List&lt;K&gt; keys() {
+<span class="fc" id="L43">        return new ArrayList&lt;&gt;(keys);</span>
+    }
+
+    @Override
+    public boolean remove(K key) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (key == null) {</span>
+<span class="fc" id="L49">            throw new IllegalArgumentException(&quot;Key cannot be null.&quot;);</span>
+        }
+<span class="fc" id="L51">        int index = keys.indexOf(key);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (index &lt; 0) {</span>
+<span class="fc" id="L53">            return false;</span>
+        }
+<span class="fc" id="L55">        values.remove(index);</span>
+<span class="fc" id="L56">        keys.remove(index);</span>
+<span class="fc" id="L57">        return true;</span>
+    }
+
+    @Override
+    public boolean contains(K key) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (key == null) {</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(&quot;Key cannot be null.&quot;);</span>
+        }
+<span class="fc" id="L65">        return keys.contains(key);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,3 @@
+recordType,roomNumber,description,priceInGrosz,capacity,firstName,lastName,checkInDate,plannedDays,notes
+ROOM,101,Valid room,15000,1,,,,,
+GUEST,999,,,,Anna,Nowak,,,

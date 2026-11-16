@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Room.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.model</a> &gt; <span class="el_source">Room.java</span></div><h1>Room.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.model;
+
+/**
+ * Describes a hotel room and its properties. The room number identifies
+ * its floor using the first digit, the price is stored in grosze to avoid
+ * losing precision.
+ */
+public class Room {
+    private final int number;
+    private final String description;
+    private final int priceInGrosz;
+    private final int capacity;
+
+    /**
+     * Creates a room with a unique three-digit number, description, daily
+     * price and positive capacity.
+     *
+     * @param number three-digit room number whose first digit identifies the
+     *               floor
+     * @param description non-blank description of the room
+     * @param priceInGrosz positive daily price of the whole room in grosze
+     * @param capacity positive maximum number of guests
+     * @throws IllegalArgumentException when the number is not three-digit,
+     *         the description is null or blank, or a numeric value is not
+     *         positive
+     */
+<span class="fc" id="L27">    public Room(int number, String description, int priceInGrosz, int capacity) {</span>
+<span class="fc bfc" id="L28" title="All 4 branches covered.">        if (number &lt; 100 || number &gt; 999) {</span>
+<span class="fc" id="L29">            throw new IllegalArgumentException(&quot;Room number must have 3 digits.&quot;);</span>
+        }
+<span class="fc" id="L31">        this.number = number;</span>
+
+<span class="pc bpc" id="L33" title="1 of 4 branches missed.">        if (description == null || description.isBlank()) {</span>
+<span class="fc" id="L34">            throw new IllegalArgumentException(</span>
+                    &quot;Description cannot be null or blank.&quot;);
+        }
+<span class="fc" id="L37">        this.description = description;</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (capacity &lt;= 0) {</span>
+<span class="fc" id="L40">            throw new IllegalArgumentException(&quot;Capacity must be positive.&quot;);</span>
+        }
+<span class="fc" id="L42">        this.capacity = capacity;</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (priceInGrosz &lt;= 0) {</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(</span>
+                    &quot;Price must be a positive number.&quot;);
+        }
+<span class="fc" id="L48">        this.priceInGrosz = priceInGrosz;</span>
+<span class="fc" id="L49">    }</span>
+
+    public int getNumber() {
+<span class="fc" id="L52">        return number;</span>
+    }
+
+    public String getDescription() {
+<span class="fc" id="L56">        return description;</span>
+    }
+
+    public int getCapacity() {
+<span class="fc" id="L60">        return capacity;</span>
+    }
+
+    public int getPriceInGrosz() {
+<span class="fc" id="L64">        return priceInGrosz;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

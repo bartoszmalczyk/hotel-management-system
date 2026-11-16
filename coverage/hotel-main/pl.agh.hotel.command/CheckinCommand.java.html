@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckinCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.command</a> &gt; <span class="el_source">CheckinCommand.java</span></div><h1>CheckinCommand.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.command;
+
+import pl.agh.hotel.model.Guest;
+import pl.agh.hotel.model.Hotel;
+import pl.agh.hotel.model.Stay;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Collects guest and stay data, creates a validated {@link Stay}, and assigns
+ * it to a free room through {@link Hotel#checkIn(int, Stay)}. Invalid input is
+ * reported without changing hotel state.
+ */
+public class CheckinCommand implements Command {
+    private final Hotel hotel;
+    private final Scanner scanner;
+    private final Clock clock;
+
+    /**
+     * Creates a command using a hotel, shared input scanner and replaceable
+     * source of the current date.
+     *
+     * @param hotel hotel in which the stay will be registered; cannot be null
+     * @param scanner shared scanner used to read stay data; cannot be null
+     * @param clock source of the default check-in date; cannot be null
+     * @throws IllegalArgumentException when any dependency is null
+     */
+<span class="fc" id="L33">    public CheckinCommand(Hotel hotel, Scanner scanner, Clock clock) {</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (hotel == null) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;Hotel can't be null&quot;);</span>
+        }
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (scanner == null) {</span>
+<span class="fc" id="L38">            throw new IllegalArgumentException(&quot;Scanner can't be null&quot;);</span>
+        }
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (clock == null) {</span>
+<span class="fc" id="L41">            throw new IllegalArgumentException(&quot;Clock can't be null&quot;);</span>
+        }
+<span class="fc" id="L43">        this.hotel = hotel;</span>
+<span class="fc" id="L44">        this.scanner = scanner;</span>
+<span class="fc" id="L45">        this.clock = clock;</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public void execute() {
+        try {
+<span class="fc" id="L51">            System.out.println(&quot;Enter room number:&quot;);</span>
+<span class="fc" id="L52">            int number = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (hotel.getStay(number) != null) {</span>
+<span class="fc" id="L54">                throw new IllegalStateException(&quot;The room is occupied&quot;);</span>
+            }
+<span class="fc" id="L56">            System.out.println(&quot;Enter main guest's first name:&quot;);</span>
+<span class="fc" id="L57">            String firstName = scanner.nextLine().trim();</span>
+<span class="fc" id="L58">            System.out.println(&quot;Enter main guest's last name:&quot;);</span>
+<span class="fc" id="L59">            String lastName = scanner.nextLine().trim();</span>
+<span class="fc" id="L60">            Guest mainGuest = new Guest(firstName, lastName);</span>
+
+<span class="fc" id="L62">            System.out.println(&quot;Enter number of additional guests:&quot;);</span>
+<span class="fc" id="L63">            int additionalGuestCount = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (additionalGuestCount &lt; 0) {</span>
+<span class="fc" id="L65">                throw new IllegalArgumentException(&quot;Number of additional guests cannot be negative.&quot;);</span>
+            }
+<span class="fc" id="L67">            if (additionalGuestCount</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                    &gt; hotel.getRoom(number).getCapacity() - 1) {</span>
+<span class="fc" id="L69">                throw new IllegalArgumentException(</span>
+                        &quot;Number of people cannot exceed the room capacity.&quot;);
+            }
+
+<span class="fc" id="L73">            List&lt;Guest&gt; additionalGuests = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            for (int i = 0; i &lt; additionalGuestCount; i++) {</span>
+<span class="fc" id="L75">                System.out.println(&quot;Enter additional guest &quot; + (i + 1) + &quot;'s first name:&quot;);</span>
+<span class="fc" id="L76">                String guestFirstName = scanner.nextLine().trim();</span>
+<span class="fc" id="L77">                System.out.println(&quot;Enter additional guest &quot; + (i + 1) + &quot;'s last name:&quot;);</span>
+<span class="fc" id="L78">                String guestLastName = scanner.nextLine().trim();</span>
+<span class="fc" id="L79">                additionalGuests.add(new Guest(guestFirstName, guestLastName));</span>
+            }
+<span class="fc" id="L81">            System.out.println(&quot;Enter check-in date (YYYY-MM-DD), or leave blank for today:&quot;);</span>
+<span class="fc" id="L82">            String input = scanner.nextLine().trim();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            LocalDate checkInDate = input.isEmpty()</span>
+<span class="fc" id="L84">                    ? LocalDate.now(clock)</span>
+<span class="fc" id="L85">                    : LocalDate.parse(input);</span>
+
+<span class="fc" id="L87">            System.out.println(&quot;Enter planned number of days:&quot;);</span>
+<span class="fc" id="L88">            int plannedDays = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if (plannedDays &lt;= 0) {</span>
+<span class="fc" id="L90">                throw new IllegalArgumentException(&quot;Planned days must be positive.&quot;);</span>
+            }
+
+<span class="fc" id="L93">            System.out.println(&quot;Enter notes, or leave blank for none:&quot;);</span>
+<span class="fc" id="L94">            String notes = scanner.nextLine().trim();</span>
+
+<span class="fc" id="L96">            Stay stay = new Stay(</span>
+                    mainGuest, additionalGuests, checkInDate,
+                    plannedDays, notes, clock);
+<span class="fc" id="L99">            hotel.checkIn(number, stay);</span>
+<span class="fc" id="L100">            System.out.println(&quot;Check-in successful for room &quot; + number + &quot;.&quot;);</span>
+<span class="fc" id="L101">        } catch (DateTimeParseException exception) {</span>
+<span class="fc" id="L102">            System.out.println(&quot;Invalid date. Use YYYY-MM-DD.&quot;);</span>
+<span class="fc" id="L103">        } catch (NumberFormatException exception) {</span>
+<span class="fc" id="L104">            System.out.println(&quot;Room number, guest count and planned days must be integers.&quot;);</span>
+<span class="fc" id="L105">        } catch (IllegalArgumentException | IllegalStateException exception) {</span>
+<span class="fc" id="L106">            System.out.println(exception.getMessage());</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

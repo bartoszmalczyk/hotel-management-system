@@ -1,0 +1,5 @@
+recordType,roomNumber,description,priceInGrosz,capacity,firstName,lastName,checkInDate,plannedDays,notes
+GUEST,201,,,,Małgorzata,Wiśniewska,,,
+ROOM,101,Przytulny pokój jednoosobowy,15099,1,,,,,
+ROOM,201,"Pokój rodzinny, balkon i ""widok na góry""",40099,3,Łukasz,Żak,2026-11-10,5,"Przyjazd po 22:00, prośba o ciszę.
+Uwaga: gość prosi o ""dodatkowy koc""."

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckoutCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.command</a> &gt; <span class="el_source">CheckoutCommand.java</span></div><h1>CheckoutCommand.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.command;
+
+import pl.agh.hotel.model.Hotel;
+
+import java.time.Clock;
+import java.util.Scanner;
+
+/**
+ * Reads an occupied room number, checks the guest out using the current date,
+ * and displays the resulting charge in grosze. Invalid input does not release
+ * the room.
+ */
+public class CheckoutCommand implements Command {
+    private final Hotel hotel;
+    private final Scanner scanner;
+    private final Clock clock;
+
+    /**
+     * Creates a command using a hotel, shared input scanner and replaceable
+     * source of the check-out date.
+     *
+     * @param hotel hotel in which the room will be released; cannot be null
+     * @param scanner shared scanner used to read the room number; cannot be
+     *                null
+     * @param clock source of the check-out date; cannot be null
+     * @throws IllegalArgumentException when any dependency is null
+     */
+<span class="fc" id="L28">    public CheckoutCommand(Hotel hotel, Scanner scanner, Clock clock) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (hotel == null) {</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(&quot;Hotel can't be null&quot;);</span>
+        }
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (scanner == null) {</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(&quot;Scanner can't be null&quot;);</span>
+        }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (clock == null) {</span>
+<span class="fc" id="L36">            throw new IllegalArgumentException(&quot;Clock can't be null&quot;);</span>
+        }
+<span class="fc" id="L38">        this.hotel = hotel;</span>
+<span class="fc" id="L39">        this.scanner = scanner;</span>
+<span class="fc" id="L40">        this.clock = clock;</span>
+<span class="fc" id="L41">    }</span>
+
+    @Override
+    public void execute() {
+        try {
+<span class="fc" id="L46">            System.out.println(&quot;Enter room number:&quot;);</span>
+<span class="fc" id="L47">            int number = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc" id="L48">            long totalPrice = hotel.checkOut(number, clock);</span>
+<span class="fc" id="L49">            System.out.println(</span>
+                    &quot;Check-out successful. Total in grosze: &quot; + totalPrice);
+<span class="fc" id="L51">        } catch (NumberFormatException exception) {</span>
+<span class="fc" id="L52">            System.out.println(&quot;Room number must be an integer.&quot;);</span>
+<span class="fc" id="L53">        } catch (IllegalArgumentException | IllegalStateException exception) {</span>
+<span class="fc" id="L54">            System.out.println(exception.getMessage());</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

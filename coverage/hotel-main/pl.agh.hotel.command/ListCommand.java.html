@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.command</a> &gt; <span class="el_source">ListCommand.java</span></div><h1>ListCommand.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.command;
+
+import pl.agh.hotel.model.Guest;
+import pl.agh.hotel.model.Hotel;
+import pl.agh.hotel.model.Room;
+import pl.agh.hotel.model.Stay;
+
+import java.util.List;
+
+/**
+ * Displays all rooms together with their occupancy, current guests and stay
+ * dates.
+ */
+public class ListCommand implements Command {
+    private final Hotel hotel;
+
+    /**
+     * Creates a command operating on the supplied hotel.
+     *
+     * @param hotel hotel whose rooms will be listed; cannot be null
+     * @throws IllegalArgumentException when the hotel is null
+     */
+<span class="fc" id="L23">    public ListCommand(Hotel hotel) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (hotel == null) {</span>
+<span class="fc" id="L25">            throw new IllegalArgumentException(</span>
+                    &quot;Hotel can't be null.&quot;);
+        }
+<span class="fc" id="L28">        this.hotel = hotel;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public void execute() {
+<span class="fc" id="L33">        List&lt;Room&gt; allRooms = hotel.getRooms();</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (Room room : allRooms) {</span>
+<span class="fc" id="L35">            Stay stay = hotel.getStay(room.getNumber());</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            if (stay != null) {</span>
+<span class="fc" id="L37">                System.out.print(&quot;Room &quot; + room.getNumber() + &quot; is occupied, guests: &quot;);</span>
+<span class="fc" id="L38">                System.out.print(</span>
+<span class="fc" id="L39">                        stay.getMainGuest().getFirstName() + &quot; &quot;</span>
+<span class="fc" id="L40">                                + stay.getMainGuest().getLastName() + &quot; &quot;);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                for (Guest guest : stay.getAdditionalGuests()) {</span>
+<span class="fc" id="L42">                    System.out.print(guest.getFirstName() + &quot; &quot; + guest.getLastName() + &quot; &quot;);</span>
+<span class="fc" id="L43">                }</span>
+<span class="fc" id="L44">                System.out.print(&quot;check-in date: &quot; + stay.getCheckInDate() + &quot; &quot;);</span>
+<span class="fc" id="L45">                System.out.println(</span>
+<span class="fc" id="L46">                        &quot;planned check-out date: &quot; + stay.getPlannedCheckOutDate());</span>
+            } else {
+<span class="fc" id="L48">                System.out.println(&quot;Room &quot; + room.getNumber() + &quot; is free.&quot;);</span>
+            }
+<span class="fc" id="L50">        }</span>
+<span class="fc" id="L51">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

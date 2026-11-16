@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Stay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.model</a> &gt; <span class="el_source">Stay.java</span></div><h1>Stay.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.model;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.List;
+
+/**
+ * Represents an active hotel stay, including its guests, check-in date,
+ * planned duration and optional notes. The additional guest list is copied
+ * during construction so that the stay cannot be changed from outside.
+ */
+public class Stay {
+    private final Guest mainGuest;
+    private final List&lt;Guest&gt; additionalGuests;
+    private final LocalDate checkInDate;
+    private final int plannedDays;
+    private final String notes;
+
+    /**
+     * Creates a stay whose check-in date is today or in the past according to
+     * the supplied clock. A stay must have one main guest and may have any
+     * number of additional guests; room capacity is validated by
+     * {@link Hotel#checkIn(int, Stay)}.
+     *
+     * @param mainGuest main guest responsible for the stay; cannot be null
+     * @param additionalGuests additional guests; cannot be null or contain
+     *                         null elements
+     * @param checkInDate actual check-in date; cannot be null or in the future
+     * @param plannedDays positive planned number of days
+     * @param notes optional notes represented by a non-null string; may be
+     *              empty
+     * @param clock source of the current date used to validate the check-in
+     *              date; cannot be null
+     * @throws IllegalArgumentException when any argument violates the stated
+     *         contract
+     */
+    public Stay(
+            Guest mainGuest,
+            List&lt;Guest&gt; additionalGuests,
+            LocalDate checkInDate,
+            int plannedDays,
+            String notes,
+<span class="fc" id="L43">            Clock clock) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (mainGuest == null) {</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(</span>
+                    &quot;Main guest can't be null.&quot;);
+        }
+<span class="fc" id="L48">        this.mainGuest = mainGuest;</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (additionalGuests == null) {</span>
+<span class="fc" id="L51">            throw new IllegalArgumentException(</span>
+                    &quot;Additional guests can't be null.&quot;);
+        }
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (Guest guest : additionalGuests) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            if (guest == null) {</span>
+<span class="fc" id="L56">                throw new IllegalArgumentException(</span>
+                        &quot;Additional guests can't contain null.&quot;);
+            }
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">        this.additionalGuests = List.copyOf(additionalGuests);</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (clock == null) {</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(</span>
+                    &quot;Clock can't be null.&quot;);
+        }
+<span class="fc bfc" id="L66" title="All 4 branches covered.">        if (checkInDate == null || checkInDate.isAfter(LocalDate.now(clock))) {</span>
+<span class="fc" id="L67">            throw new IllegalArgumentException(</span>
+                    &quot;Check-in date cannot be null or in the future.&quot;);
+        }
+<span class="fc" id="L70">        this.checkInDate = checkInDate;</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (notes == null) {</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(</span>
+                    &quot;Notes can't be null.&quot;);
+        }
+<span class="fc" id="L76">        this.notes = notes;</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (plannedDays &lt;= 0) {</span>
+<span class="fc" id="L79">            throw new IllegalArgumentException(</span>
+                    &quot;Planned days must be positive.&quot;);
+        }
+<span class="fc" id="L82">        this.plannedDays = plannedDays;</span>
+<span class="fc" id="L83">    }</span>
+
+    public Guest getMainGuest() {
+<span class="fc" id="L86">        return mainGuest;</span>
+    }
+
+    public List&lt;Guest&gt; getAdditionalGuests() {
+<span class="fc" id="L90">        return additionalGuests;</span>
+    }
+
+    public LocalDate getCheckInDate() {
+<span class="fc" id="L94">        return checkInDate;</span>
+    }
+
+    public int getPlannedDays() {
+<span class="fc" id="L98">        return plannedDays;</span>
+    }
+
+    public String getNotes() {
+<span class="fc" id="L102">        return notes;</span>
+    }
+
+    /**
+     * Calculates the planned check-out date from the check-in date and planned
+     * duration.
+     *
+     * @return check-in date plus the planned number of days
+     */
+    public LocalDate getPlannedCheckOutDate() {
+<span class="fc" id="L112">        return checkInDate.plusDays(plannedDays);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

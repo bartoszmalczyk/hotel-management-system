@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hotel-main</a> &gt; <a href="index.source.html" class="el_package">pl.agh.hotel.command</a> &gt; <span class="el_source">ViewCommand.java</span></div><h1>ViewCommand.java</h1><pre class="source lang-java linenums">package pl.agh.hotel.command;
+
+import pl.agh.hotel.model.Guest;
+import pl.agh.hotel.model.Hotel;
+import pl.agh.hotel.model.Room;
+import pl.agh.hotel.model.Stay;
+
+import java.util.Scanner;
+
+/**
+ * Reads a room number and displays complete information about the room and
+ * its current stay. Invalid input is reported without terminating the command
+ * loop.
+ */
+public class ViewCommand implements Command {
+    private final Hotel hotel;
+    private final Scanner scanner;
+
+    /**
+     * Creates a command using the supplied hotel and shared input scanner.
+     *
+     * @param hotel hotel to query; cannot be null
+     * @param scanner shared scanner used to read the room number; cannot be
+     *                null
+     * @throws IllegalArgumentException when any dependency is null
+     */
+<span class="fc" id="L27">    public ViewCommand(Hotel hotel, Scanner scanner) {</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (hotel == null) {</span>
+<span class="fc" id="L29">            throw new IllegalArgumentException(</span>
+                    &quot;Hotel can't be null&quot;);
+        }
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (scanner == null) {</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(</span>
+                    &quot;Scanner can't be null&quot;);
+        }
+<span class="fc" id="L36">        this.hotel = hotel;</span>
+<span class="fc" id="L37">        this.scanner = scanner;</span>
+<span class="fc" id="L38">    }</span>
+
+    @Override
+    public void execute() {
+<span class="fc" id="L42">        System.out.println(&quot;Enter room number:&quot;);</span>
+        try {
+<span class="fc" id="L44">            int number = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc" id="L45">            Room room = hotel.getRoom(number);</span>
+<span class="fc" id="L46">            System.out.println(&quot;Room: &quot; + room.getNumber());</span>
+<span class="fc" id="L47">            System.out.println(&quot;Description: &quot; + room.getDescription());</span>
+<span class="fc" id="L48">            System.out.println(&quot;Price in grosze: &quot; + room.getPriceInGrosz());</span>
+<span class="fc" id="L49">            System.out.println(&quot;Capacity: &quot; + room.getCapacity());</span>
+
+<span class="fc" id="L51">            Stay stay = hotel.getStay(number);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (stay == null) {</span>
+<span class="fc" id="L53">                System.out.println(&quot;Room is free.&quot;);</span>
+            } else {
+<span class="fc" id="L55">                System.out.println(&quot;Room is occupied.&quot;);</span>
+<span class="fc" id="L56">                Guest mainGuest = stay.getMainGuest();</span>
+<span class="fc" id="L57">                System.out.println(</span>
+<span class="fc" id="L58">                        &quot;Main guest: &quot; + mainGuest.getFirstName() + &quot; &quot;</span>
+<span class="fc" id="L59">                                + mainGuest.getLastName());</span>
+<span class="fc" id="L60">                System.out.println(&quot;Additional guests: &quot; + stay.getAdditionalGuests().size());</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                for (Guest guest : stay.getAdditionalGuests()) {</span>
+<span class="fc" id="L62">                    System.out.println(&quot;- &quot; + guest.getFirstName() + &quot; &quot; + guest.getLastName());</span>
+<span class="fc" id="L63">                }</span>
+<span class="fc" id="L64">                System.out.println(&quot;Check-in date: &quot; + stay.getCheckInDate());</span>
+<span class="fc" id="L65">                System.out.println(&quot;Planned days: &quot; + stay.getPlannedDays());</span>
+<span class="fc" id="L66">                System.out.println(</span>
+<span class="fc" id="L67">                        &quot;Planned check-out date: &quot; + stay.getPlannedCheckOutDate());</span>
+<span class="fc" id="L68">                System.out.println(&quot;Notes: &quot; + stay.getNotes());</span>
+            }
+<span class="fc" id="L70">        } catch (NumberFormatException exception) {</span>
+<span class="fc" id="L71">            System.out.println(&quot;Room number must be an integer.&quot;);</span>
+<span class="fc" id="L72">        } catch (IllegalArgumentException exception) {</span>
+<span class="fc" id="L73">            System.out.println(exception.getMessage());</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

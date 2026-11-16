@@ -1,0 +1,4 @@
+recordType,roomNumber,description,priceInGrosz,capacity,firstName,lastName,checkInDate,plannedDays,notes
+ROOM,101,Valid room,15000,1,,,,,
+ROOM,102,Single room,15000,1,Jan,Kowalski,2026-11-10,3,
+GUEST,102,,,,Anna,Nowak,,,

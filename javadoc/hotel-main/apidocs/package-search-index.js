@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pl.agh.hotel"},{"l":"pl.agh.hotel.command"},{"l":"pl.agh.hotel.console"},{"l":"pl.agh.hotel.model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pl.agh.hotel"},{"l":"pl.agh.hotel.command"},{"l":"pl.agh.hotel.console"},{"l":"pl.agh.hotel.model"},{"l":"pl.agh.hotel.persistence"}];updateSearchResults();
